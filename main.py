@@ -218,6 +218,7 @@ async def run_perry(request: Request):
             "p": pos // hcf,
             "q": total // hcf
         })
+    print(acc)
     return acc
 
 @app.post("/cipher-cracking")
