@@ -104,8 +104,17 @@ async def run_ttt(request: Request):
         requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
     print("########\n\n")
 
+@app.post("/fixedrace")
+async def run_fixedrace(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    # from fixedrace import solve
+    # solve(body)
+    print(body)
 
-@app.post("/stonks")
+    return "asd,ads,e3123,asd,axc,asd,231,sda,123,s"
+
+@app.post("/stock-hunter")
 async def run_stonks(request: Request):
     body = await request.body()
     body = json.loads(body)
