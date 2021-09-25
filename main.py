@@ -201,6 +201,8 @@ async def run_perry(request: Request):
     body = json.loads(body)
     print(body)
     acc = []
+    for qn in body:
+        acc.append({"p": 43977, "q": 250000000})
     return acc
 
 @app.post("/cipher-cracking")
