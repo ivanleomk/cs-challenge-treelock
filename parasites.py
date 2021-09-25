@@ -103,10 +103,7 @@ def solve_1_and_2_alt(data,interested):
     x,y = i.split(",")
     r,c = int(x),int(y)
     # Initially infected or healthy are set to -1 by default, else we make sure to set them to their values in the grid for tally
-    if data[r][c] == 3 or data[r][c] ==1 :
-      tally[i] = -1
-    else:
-      tally[i] = data[r][c]
+    tally[i] = -1
     
   while q:
     r,c,curr_time = q.popleft()
@@ -130,8 +127,8 @@ def solve_1_and_2_alt(data,interested):
       if (r,c)!=(start_row,start_col) and first_infected == -1:
         first_infected = curr_time
 
-      if (r,c)!=(start_row,start_col) and  "{},{}".format(r,c) in tally:
-        tally["{},{}".format(r,c)] = 3
+      if (r,c)!=(start_row,start_col) and  "{},{}".format(r,c) in tally and tally["{},{}".format(r,c)]==-1:
+        tally["{},{}".format(r,c)] = curr_time
 
       time_taken = max(curr_time,time_taken)
 
