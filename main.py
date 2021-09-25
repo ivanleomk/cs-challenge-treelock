@@ -1,11 +1,8 @@
 # A Bare Bones Slack API
 # Illustrates basic usage of FastAPI
 from fastapi import FastAPI, Request
-from pydantic import BaseModel
-from typing import List
 import json
 import requests
-import os
 import sseclient
 import tictactoe as ttt
 
@@ -22,6 +19,7 @@ def read_root():
 async def run_asteroid(request: Request):
     from asteroids import solve
     body = await request.body()
+    body = json.loads(body)
     print(body)
     return solve(body["test_cases"])
 
@@ -71,7 +69,11 @@ async def run_ttt(request: Request):
                 return
             nxt = ttt.get_other(nxt)
             # Execute the action received from the server
-            b2 = ttt.result(board, ttt.get_action(body["position"]))
+            try:
+                b2 = ttt.result(board, ttt.get_action(body["position"]))
+            except:
+                requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
+                return
             # if not ttt.check_valid(board, b2):
             #     requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
             #     return
@@ -84,6 +86,22 @@ async def run_ttt(request: Request):
             return
         elif "winner" in body:
             return
+    print("########\n\n")
+
+
+@app.post("/quoridor")
+async def run_ttt(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    battle_id = body["battleId"]
+    stream = requests.get(
+        "https://cis2021-arena.herokuapp.com/quoridor/start/" + battle_id, stream=True)
+    client = sseclient.SSEClient(stream)
+    url = "https://cis2021-arena.herokuapp.com/quoridor/play/" + battle_id
+    for event in client.events():
+        body = json.loads(event.data)
+        print("RECEIVED", body)
+        requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
     print("########\n\n")
 
 
