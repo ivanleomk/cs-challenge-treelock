@@ -24,11 +24,13 @@ def assign_value(grid,r,c):
     else:
         grid[r][c] = 'R'
 
-def assign_grid_value(grid):
+def assign_grid_value(grid,target_point):
     for r in range(len(grid)):
         for c in range(len(grid[0])):
-            print(r,c)
-            assign_value(grid,r,c)
+            if (r,c) == target_point or (r,c) == (0,0):
+                grid[r][c] == 0
+            else:
+                assign_value(grid,r,c)
     
     return grid
 
