@@ -101,112 +101,50 @@ def solve_1_and_2_alt(data, interested):
     return tally, -1
 
 
-# def solve_1_and_2_alt(data,interested):
-#   start_row,start_col = 0,0
-#   for i in range(len(data)):
-#     for j in range(len(data[i])):
-#       if data[i][j] == 3:
-#         start_row = i
-#         start_col = j
-#         break
+def solve_1_and_2(data, interested):
+    x, y = locate_parasite(data)
+    grid = data
+    q = deque()
+    visited = set()
+    tally = {}
+    for i in interested:
+        tally[i] = -1
 
-#   q = deque([[start_row,start_col,0]])
-#   num = det_people(data)
+    def check_and_append(r, c):
+        if (r, c) in visited:
+            return
+        if r >= len(grid) or r < 0:
+            return
+        if c >= len(grid[0]) or c < 0:
+            return
+        if grid[r][c] == 1:
+            q.append((r, c))
 
-#   vacant = 0
-#   infected = 0
-#   vaccinated = 0
-#   time_taken = 0
-#   data[start_row][start_col]=1
-#   first_infected = -1
+    q.append((x, y))
+    t = -1
+    while q:
+        width = len(q)
+        t += 1
+        for _ in range(width):
+            a, b = q.popleft()
+            check_and_append(a, b - 1)
+            check_and_append(a, b + 1)
+            check_and_append(a + 1, b)
+            check_and_append(a - 1, b)
+            str_coord = "{},{}".format(a, b)
+            if t != 0 and str_coord in tally:
+                tally[str_coord] = t
+            grid[a][b] = 3
+            visited.add((a, b))
 
-#   #Return -1 if person remains healthy or if the person is infected to begin with.
-#   tally = {}
-#   for i in interested:
-#     x,y = i.split(",")
-#     r,c = int(x),int(y)
-#     # Initially infected or healthy are set to -1 by default, else we make sure to set them to their values in the grid for tally
-#     tally[i] = -1
+    duration = t
+    for i in grid:
+        for j in i:
+            if j == 1:
+                duration = -1
+                break
 
-#   while q:
-#     r,c,curr_time = q.popleft()
-
-
-#     if r < 0 or r >= len(data) or c < 0 or c >= len(data[0]):
-#       continue
-
-#     #Visited Cell
-#     if data[r][c] == '#':
-#       continue
-
-#     #Else update vacant and vaccinated count
-#     if data[r][c] == 0:
-#       vacant+=1
-
-#     elif data[r][c] == 1:
-#       infected +=1
-#       #Find time to infect first person
-#       if (r,c)!=(start_row,start_col) and first_infected == -1:
-#         first_infected = curr_time
-
-#       if (r,c)!=(start_row,start_col) and  "{},{}".format(r,c) in tally and tally["{},{}".format(r,c)]==-1:
-#         tally["{},{}".format(r,c)] = curr_time
-
-#       time_taken = max(curr_time,time_taken)
-
-#       q.append([r+1,c,curr_time+1])
-#       q.append([r-1,c,curr_time+1])
-#       q.append([r,c+1,curr_time+1])
-#       q.append([r,c-1,curr_time+1])
-
-#     data[r][c] = '#'
-
-#   return tally,first_infected if num == infected else -1
-
-# def solve_1_and_2(data, interested):
-#     x, y = locate_parasite(data)
-#     grid = data
-#     q = deque()
-#     visited = set()
-#     tally = {}
-#     for i in interested:
-#         tally[i] = -1
-
-#     def check_and_append(r, c):
-#         if (r, c) in visited:
-#             return
-#         if r >= len(grid) or r < 0:
-#             return
-#         if c >= len(grid[0]) or c < 0:
-#             return
-#         if grid[r][c] == 1:
-#             q.append((r, c))
-
-#     q.append((x, y))
-#     t = -1
-#     while q:
-#         width = len(q)
-#         t += 1
-#         for _ in range(width):
-#             a, b = q.popleft()
-#             check_and_append(a, b - 1)
-#             check_and_append(a, b + 1)
-#             check_and_append(a + 1, b)
-#             check_and_append(a - 1, b)
-#             str_coord = "{},{}".format(a, b)
-#             if t != 0 and str_coord in tally:
-#                 tally[str_coord] = t
-#             grid[a][b] = 3
-#             visited.add((a, b))
-
-#     duration = t
-#     for i in grid:
-#         for j in i:
-#             if j == 1:
-#                 duration = -1
-#                 break
-
-#     return tally, duration
+    return tally, duration
 
 
 def solve(dataArr):
@@ -223,7 +161,7 @@ def solve(dataArr):
             "p1": tally,
             "p2": duration,
             "p3": p3_time,
-            "p4": 1 if i <= 8 else 2,
+            "p4": 1 if i <= 8 else 0,
         }
         res.append(ans)
     return res
