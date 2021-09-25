@@ -165,12 +165,22 @@ async def run_decoder(request: Request):
     body = await request.body()
     body = json.loads(body)
     acc = []
-    pol = body["possible_values"]
-    print(body)
-    for _ in range(body["num_slots"]):
-        acc.append(random.choice(pol))
+    decode = db.collection("decoder")
+    docs = decode.stream()
+
+    for doc in docs:
+        if doc.id == "guess":
+            results = doc.to_dict()
+
+    if not body["history"]:
+        pol = body["possible_values"]
+        print(body)
+        for _ in range(body["num_slots"]):
+            acc.append(random.choice(pol))
 
 
-    return {
-        "answer": acc
-    }
+        return {
+            "answer": acc
+        }
+    
+    return {"answer": json.loads(results["guess"])}
