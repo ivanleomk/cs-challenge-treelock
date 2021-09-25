@@ -185,3 +185,11 @@ async def run_decoder(request: Request):
     return {
         "answer": answer
     }
+
+@app.post("/stig/perry")
+async def run_perry(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    print(body)
+    acc = []
+    return acc
