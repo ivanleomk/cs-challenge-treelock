@@ -170,7 +170,9 @@ async def run_decoder(request: Request):
     for _ in range(body["num_slots"]):
         acc.append(random.choice(pol))
     
+    final = ["v", "v", "n", "n"]
+    final.insert("y", 0)
 
     return {
-        "answer": acc
+        "answer": final
     }
