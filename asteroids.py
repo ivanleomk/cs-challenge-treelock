@@ -67,7 +67,6 @@ def solve(asteroids):
 
     return acc
 
-print(solve(["CCCAAABBBAAACCC", "AAACCCAAAA"]))
 
 
 # def get_score(curr_score):

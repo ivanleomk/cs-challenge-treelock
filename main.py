@@ -33,6 +33,11 @@ async def run_parasite(request: Request):
     body = json.loads(body)
     return solve(body)
 
+@app.post("/optopt")
+async def run_optopt(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    print(body)
 
 @app.post("/tic-tac-toe")
 async def run_ttt(request: Request):
@@ -86,4 +91,3 @@ async def run_ttt(request: Request):
 async def run_stonks(request: Request):
     body = await request.body()
     body = json.loads(body)
-    print(body)
