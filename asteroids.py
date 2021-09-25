@@ -42,24 +42,32 @@ def expand_along_center(l,ind):
     return acc
 
 def solve(asteroids):
-    encoding = generate_encoding(asteroids)
-    max_score = 0
-    best_ind = 0
-    prev = 0
-    for i in range(len(encoding)):
-        if i != 0:
-            prev += encoding[i - 1][0]
+    acc = []
+    for asteroid in asteroids:
+        encoding = generate_encoding(asteroid)
+        max_score = 0
+        best_ind = 0
+        prev = 0
+        for i in range(len(encoding)):
+            if i != 0:
+                prev += encoding[i - 1][0]
 
-        new_score = expand_along_center(encoding,i)
-        
-        if  new_score > max_score:
+            new_score = expand_along_center(encoding,i)
             
-            best_ind = prev + encoding[i][0] // 2
-            max_score = new_score
-    
-    return best_ind,max_score
+            if  new_score > max_score:
+                
+                best_ind = prev + encoding[i][0] // 2
+                max_score = new_score
+        
+        acc.append({
+            "input": asteroid,
+            "score": max_score,
+            "origin": best_ind,
+        })
 
-print(solve("CCCAAABBBAAACCC"))
+    return acc
+
+print(solve(["CCCAAABBBAAACCC", "AAACCCAAAA"]))
 
 
 # def get_score(curr_score):
