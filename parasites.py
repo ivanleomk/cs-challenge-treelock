@@ -117,7 +117,7 @@ def solve(dataArr):
         
         data = dataArr[i]
         print(data)
-        if len(data["grid"][0])> 100 or len(data["grid"]) > 100:
+        if data["room"] >= 19:
             ans = {
                 "room": {},
                 "p1": 0,
