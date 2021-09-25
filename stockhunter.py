@@ -1,20 +1,23 @@
-x = {
-    "entryPoint":{
-        "first": 0,
-        "second": 0
-        },
-    "targetPoint":{
-        "first": 2,
-        "second": 2
-        },
-    "gridDepth": 156,
-    "gridKey":20183,
-    "horizontalStepper":16807,
-    "verticalStepper":48271
-}
+
 
 def generate_grid(entry_point,target_point):
     return [[0 for i in range(target_point[1]+1)] for j in range(target_point[0]+1)]
+
+def calculate_minimum_cost(grid):
+    
+    dp = [[0 for i in range(len(grid[0]))] for i in range(len(grid))]
+
+    for r in range(1,len(grid)):
+        dp[r][0] = dp[r-1][0] + grid[r-1][0]
+    
+    for c in range(1,len(grid[0])):
+        dp[0][c] = dp[0][c-1] + grid[0][c-1]
+    
+    for r in range(1,len(grid)):
+        for c in range(1,len(grid[0])):
+            dp[r][c] = min(dp[r-1][c]+grid[r-1][c],dp[r][c-1]+grid[r][c-1])
+
+    return dp[-1][-1]
 
 def assign_value(grid,r,c):
     if grid[r][c] == 3:
@@ -22,17 +25,18 @@ def assign_value(grid,r,c):
     elif grid[r][c] == 2:
         grid[r][c] = 'M'
     else:
-        grid[r][c] = 'R'
+        grid[r][c] = 'S'
 
 def assign_grid_value(grid,target_point):
-    grid[0][0] = 'L'
-    grid[-1][-1] = 'L'
-    for r in range(len(grid)):
-        for c in range(len(grid[0])):
+    map = [[0 for i in range(len(grid[0]))] for j in range(len(grid))]
+    map[0][0] = 'L'
+    map[-1][-1] = 'L'
+    for r in range(len(map)):
+        for c in range(len(map[0])):
             if (r,c) != target_point and (r,c) != (0,0):
-                assign_value(grid,r,c)
+                assign_value(map,r,c)
     
-    return grid
+    return map
 
 def solve_instance(data):
     entry_point = data["entryPoint"]['first'],data["entryPoint"]['second']
@@ -77,16 +81,17 @@ def solve_instance(data):
                 grid[x][y] = 2
             else:
                 grid[x][y] = 1
-    
+
     map = assign_grid_value(grid,target_point)
+    dp = calculate_minimum_cost(grid)
+    
     return {
         'gridMap':map,
-        'minimumCost':9
+        'minimumCost':dp
     }
 
 def solve(data):
-    res = [solve_instance(x) for x in data]
+    res = [solve_instance(grd) for grd in data]
     return res
 
-print(solve([x]))
 
