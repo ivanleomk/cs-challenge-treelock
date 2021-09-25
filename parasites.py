@@ -112,11 +112,11 @@ def solve_1_and_2(data, x, y):
 
 def solve(dataArr):
     res = []
-    # print(dataArr)
+    print(dataArr)
     for i in range(len(dataArr)):
         
         data = dataArr[i]
-        # print(data)
+        print(data)
         if len(data["grid"][0])> 100 or len(data["grid"]) > 100:
             ans = {
                 "room": {},
@@ -140,5 +140,5 @@ def solve(dataArr):
             }
             res.append(ans)
 
-    # print(res)
+    print(res)
     return res
