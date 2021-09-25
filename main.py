@@ -43,32 +43,31 @@ async def run_ttt(request: Request):
     client = sseclient.SSEClient(stream)
     url = "https://cis2021-arena.herokuapp.com/tic-tac-toe/play/" + battle_id
     board = ttt.initial_state()
+    me = None
     for event in client.events():
         body = json.loads(event.data)
         print("RECEIVED", body)
         # First initiation
         if "youAre" in body:
             if body["youAre"] == "O":
-                action = ttt.minimax(board)
-                board = ttt.result(board, action)
-                print("SENT", {"action": "putSymbol", "position": ttt.get_dir(action)})
                 requests.post(
-                    url, json={"action": "putSymbol", "position": ttt.get_dir(action)})
+                    url, json={"action": "putSymbol", "position": ttt.get_dir(ttt.minimax(board))})
+                me = "O"
+            else:
+                me = "X"
             continue
         # Other msgs from server
-        if "position" in body:
-            # Execute the server's action
-            action = ttt.get_action(body["position"])
-            board = ttt.result(board, action)
-            # Execute and send back our own action
-            action = ttt.minimax(board)
-            board = ttt.result(board, action)
-            print("SENT", {"action": "putSymbol", "position": ttt.get_dir(action)})
-            requests.post(
-                url, json={"action": "putSymbol", "position": ttt.get_dir(action)})
+        if "position" in body and "player" in body:
+            # Execute the action received from the server
+            board = ttt.result(board, ttt.get_action(body["position"]))
+            # Check if we need to send another action
+            if body["player"] != me:
+                requests.post(
+                    url, json={"action": "putSymbol", "position": ttt.get_dir(ttt.minimax(board))})
         else:
             requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
     print("########\n\n")
+
 
 @app.post("/stonks")
 async def run_stonks(request: Request):
