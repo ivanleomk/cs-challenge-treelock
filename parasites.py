@@ -219,21 +219,18 @@ def solve(dataArr):
     for i in range(len(dataArr)):
         
         data = dataArr[i]
+        # x, y = locate_parasite(data["grid"])
+        # part 1 and 2
+        tally,duration = solve_1_and_2_alt(deepcopy(data['grid']),data['interestedIndividuals'])
+        p3_time = solve_3(deepcopy(data["grid"]))
 
-
-        else:
-            x, y = locate_parasite(data["grid"])
-            # part 1 and 2
-            tally,duration = solve_1_and_2_alt(deepcopy(data['grid']),data['interestedIndividuals'])
-            p3_time = solve_3(deepcopy(data["grid"]))
-
-            ans = {
-                "room": data["room"],
-                "p1": tally,
-                "p2": duration,
-                "p3": p3_time,
-                "p4": 1 if i <= 8 else 2,
-            }
-            res.append(ans)
+        ans = {
+            "room": data["room"],
+            "p1": tally,
+            "p2": duration,
+            "p3": p3_time,
+            "p4": 1 if i <= 8 else 2,
+        }
+        res.append(ans)
 
     return res
