@@ -56,7 +56,7 @@ def solve_3(data):
     return time_taken
   return -1
 
-def solve_1_and_2_alt(data):
+def solve_1_and_2_alt(data,interested):
   start_row,start_col = locate_parasite(data)
   q = deque([[start_row,start_col,0]])
   time_taken = 0
