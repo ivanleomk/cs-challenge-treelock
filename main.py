@@ -167,7 +167,7 @@ async def run_decoder(request: Request):
     acc = []
     decode = db.collection("decoder")
     docs = decode.stream()
-
+    print(body)
     for doc in docs:
         if doc.id == "guess":
             results = doc.to_dict()
