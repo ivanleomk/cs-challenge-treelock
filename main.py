@@ -1,5 +1,6 @@
 # A Bare Bones Slack API
 # Illustrates basic usage of FastAPI
+from intervals import generate_intervals
 from firebase_admin import firestore
 from firebase_admin import credentials
 import firebase_admin
@@ -135,6 +136,7 @@ async def execute(request: Request):
         arr.append([])
     return arr
 
+
 @app.post("/fixedrace")
 async def run_race(request: Request):
     body = await request.body()
@@ -159,8 +161,8 @@ async def run_race(request: Request):
                 res[swimmer] = 1
     res = list(sorted(res.keys(), key=lambda item: res[item], reverse=True))
     swimmers = str(body)[2:len(str(body))-1].split(",")
-    res = filter(lambda x : x in swimmers, res)
-    res =  ",".join(res)
+    res = filter(lambda x: x in swimmers, res)
+    res = ",".join(res)
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)[2:len(str(body))-1]}, merge=True)
@@ -185,25 +187,25 @@ async def run_decoder(request: Request):
         for _ in range(body["num_slots"]):
             acc.append(random.choice(pol))
 
-
         return {
             "answer": acc
         }
-    
+
     answer = results['answer'].split(',')
     return {
         "answer": answer
     }
 
+
 @app.post("/stig/perry")
 async def run_perry(request: Request):
     body = await request.body()
     body = json.loads(body)
-    from intervals import find_overlapping_interval
+    from intervals import find_overlapping_interval, generate_intervals
     import math
     acc = []
     for data in body:
-        processed = find_overlapping_interval(body["question"])
+        processed = find_overlapping_interval(generate_intervals(data["questions"]))
         max_idx = 0
         curr_max = 0
         for i in range(len(processed)):
@@ -211,6 +213,7 @@ async def run_perry(request: Request):
             if curr_amt > curr_max:
                 curr_max = curr_amt
                 max_idx = i
+        print("####", processed)
         pos = processed[max_idx][1][1] - processed[max_idx][1][0] + 1
         total = data["maxRating"]
         hcf = math.gcd(total, pos)
@@ -219,6 +222,7 @@ async def run_perry(request: Request):
             "q": total // hcf
         })
     return acc
+
 
 @app.post("/cipher-cracking")
 async def run_cypher(request: Request):
