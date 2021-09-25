@@ -162,8 +162,27 @@ async def run_race(request: Request):
 @app.post("/decoder")
 async def run_decoder(request: Request):
     body = await request.body()
+    body = json.loads(body)
+    acc = []
+    decode = db.collection("decoder")
+    docs = decode.stream()
     print(body)
+    for doc in docs:
+        if doc.id == "guess":
+            results = doc.to_dict()
 
+    if not body["history"]:
+        pol = body["possible_values"]
+        print(body)
+        for _ in range(body["num_slots"]):
+            acc.append(random.choice(pol))
+
+
+        return {
+            "answer": acc
+        }
+    
+    answer = results['answer'].split(',')
     return {
-        "answer": ["a", "b", "c", "d"]
+        "answer": answer
     }
