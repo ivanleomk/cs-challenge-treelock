@@ -163,8 +163,13 @@ async def run_race(request: Request):
 @app.post("/decoder")
 async def run_decoder(request: Request):
     body = await request.body()
-    print(body)
+    body = json.loads(body)
+    acc = []
+    pol = body["possible_values"]
+    for _ in range(body["num_slots"]):
+        acc.append(random.choice(pol))
+    
 
     return {
-        "answer": ["a", "b", "c", "d"]
+        "answer": acc
     }
