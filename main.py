@@ -148,6 +148,7 @@ async def run_race(request: Request):
                 res[swimmer] += 1
             else:
                 res[swimmer] = 1
+    print(res)
     res = list(sorted(res.keys(), key=lambda item: item[1], reverse=True))
     print(res)
     swimmers = str(body)[2:len(str(body))-1].split(",")
