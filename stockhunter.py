@@ -54,7 +54,7 @@ def solve_instance(data):
             elif y == 0:
                 grid[x][y] = (x * horizontalStepper) % 3
             elif x == 0:
-                grid[x][y] = (x * verticalStepper)%3
+                grid[x][y] = (y * verticalStepper)%3
             else:
                 grid[x][y] = (grid[x-1][y] * grid[x][y-1])
             # assign_value(grid,x,y)
