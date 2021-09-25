@@ -16,10 +16,12 @@ def calc_asteroids(data_file):
     res_json = []
     for i, v in enumerate(inp["test_cases"]):
         res_json.append({"input": v, "score": 0, "origin": 0})
-    return res_json
 
     res = []
     for string in inp["test_cases"]:
+        if len(string) > 20:
+            res.append((0, 0))
+            continue
         maxx = -1
         index = -1
         for i in range(len(string)):
