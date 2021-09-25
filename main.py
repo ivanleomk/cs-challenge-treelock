@@ -22,6 +22,7 @@ def read_root():
 async def run_asteroid(request: Request):
     from asteroids import solve
     body = await request.body()
+    print(body)
     return solve(body["test_cases"])
 
 
