@@ -1,0 +1,6 @@
+{'options': [{'strike': 69.0, 'premium': 20.0, 'type': 'put'}], 'view': [{'mean': 52.0, 'var': 5.0, 'min': 23.0, 'max': 131.0, 'weight': 1.0}]}
+{'options': [{'strike': 76.0, 'premium': 16.0, 'type': 'call'}], 'view': [{'mean': 83.0, 'var': 6.0, 'min': 16.0, 'max': 147.0, 'weight': 1.0}]}
+
+
+
+[(PUT,45),(CALL,23),]

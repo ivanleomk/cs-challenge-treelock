@@ -25,7 +25,7 @@ def assign_value(grid,r,c):
     elif grid[r][c] == 2:
         grid[r][c] = 'M'
     else:
-        grid[r][c] = 'R'
+        grid[r][c] = 'S'
 
 def assign_grid_value(grid,target_point):
     map = [[0 for i in range(len(grid[0]))] for j in range(len(grid))]
