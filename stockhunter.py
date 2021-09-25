@@ -1,17 +1,4 @@
-x = {
-    "entryPoint":{
-        "first": 0,
-        "second": 0
-        },
-    "targetPoint":{
-        "first": 2,
-        "second": 2
-        },
-    "gridDepth": 156,
-    "gridKey":20183,
-    "horizontalStepper":16807,
-    "verticalStepper":48271
-}
+
 
 def generate_grid(entry_point,target_point):
     return [[0 for i in range(target_point[1]+1)] for j in range(target_point[0]+1)]
@@ -104,7 +91,7 @@ def solve_instance(data):
     }
 
 def solve(data):
-    res = [solve_instance(x) for x in data]
+    res = [solve_instance(grd) for grd in data]
     return res
 
 
