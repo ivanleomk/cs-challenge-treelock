@@ -65,3 +65,9 @@ async def run_ttt(request: Request):
             url, json={"action": "putSymbol", "position": ttt.get_dir(action)})
     requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
     print("########")
+
+@app.post("/stonks")
+async def run_stonks(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    print(body)
