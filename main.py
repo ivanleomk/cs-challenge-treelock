@@ -202,3 +202,10 @@ async def run_perry(request: Request):
     print(body)
     acc = []
     return acc
+
+@app.post("/cipher-cracking")
+async def run_cypher(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    print(body)
+    return []
