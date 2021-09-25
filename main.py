@@ -1,6 +1,6 @@
 # A Bare Bones Slack API
 # Illustrates basic usage of FastAPI
-from fastapi import FastAPI, requests
+from fastapi import FastAPI, Request
 import json
 import requests
 import sseclient
