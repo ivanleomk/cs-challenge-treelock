@@ -156,12 +156,23 @@ def solve(dataArr):
         tally, duration = solve_1_and_2_alt(
             deepcopy(data['grid']), data['interestedIndividuals'])
         p3_time = solve_3(deepcopy(data["grid"]))
+        p4 = None
+        if i <= 8:
+            p4 = 0
+        elif i <= 10 or i == 13:
+            p4 = 1
+        elif i == 11 or i == 14:
+            p4 = 2
+        elif i == 15:
+            p4 = 4
+        else:
+            p4 = 7
         ans = {
             "room": data["room"],
             "p1": tally,
             "p2": duration,
             "p3": p3_time,
-            "p4": 1 if i <= 8 else 0,
+            "p4": p4,
         }
         res.append(ans)
     return res
