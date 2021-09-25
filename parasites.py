@@ -75,6 +75,9 @@ def solve_3(data):
   return time_taken if len(data)*len(data[0]) - (vacant + vaccinated) ==  infected else -1
 
 
+
+
+
 def solve_1_and_2_alt(data,interested):
   start_row,start_col = 0,0
   for i in range(len(data)):
@@ -99,8 +102,9 @@ def solve_1_and_2_alt(data,interested):
   for i in interested:
     x,y = i.split(",")
     r,c = int(x),int(y)
+    # Initially infected or healthy are set to -1 by default, else we make sure to set them to their values in the grid for tally
     if data[r][c] == 3 or data[r][c] ==1 :
-      first_infected = -1
+      tally[i] = -1
     else:
       tally[i] = data[r][c]
     
