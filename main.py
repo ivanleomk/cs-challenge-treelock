@@ -16,5 +16,4 @@ def read_root():
 async def run_asteroid(request: Request):
     from asteroids import calc_asteroids
     body = await request.body()
-    print("\n##############", body, "\n")
     return calc_asteroids(body)
