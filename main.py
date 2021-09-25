@@ -1,6 +1,6 @@
 # A Bare Bones Slack API
 # Illustrates basic usage of FastAPI
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
 from typing import List
 
@@ -13,6 +13,8 @@ def read_root():
     return {"Hello": "World"}
 
 @app.post("/asteroid")
-def run_asteroid(jsonn):
+async def run_asteroid(request: Request):
     from asteroids import calc_asteroids
-    return calc_asteroids(jsonn)
+    body = await request.body()
+    print("\n##############", body, "\n")
+    return calc_asteroids(body)

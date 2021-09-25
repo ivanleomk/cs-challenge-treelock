@@ -11,12 +11,9 @@ def get_score(curr_score):
 
 
 def calc_asteroids(data_file):
-    inp = None
-    # with open(data_file) as f:
-    #     inp = json.load(f)
     inp = json.loads(data_file)
     res = []
-    for string in inp:
+    for string in inp["test_cases"]:
         maxx = -1
         index = -1
         for i in range(len(string)):
@@ -68,6 +65,6 @@ def calc_asteroids(data_file):
                 index = i
         res.append((maxx, index))
     res_json = []
-    for v in res:
-        res_json.append({"input": inp, "score": v[0], "origin": v[1]})
+    for i, v in enumerate(res):
+        res_json.append({"input": inp["test_cases"][i], "score": v[0], "origin": v[1]})
     return res_json
