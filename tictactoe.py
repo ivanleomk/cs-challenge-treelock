@@ -8,6 +8,12 @@ X = "X"
 O = "O"
 EMPTY = None
 
+def get_other(xo):
+    if xo == X:
+        return O
+    else:
+        return X
+
 def get_dir(xy):
     """
     |NW|N |NE|
@@ -54,6 +60,16 @@ def get_action(dire):
         return (2, 1)
     elif dire == "SE":
         return (2, 2)
+
+def check_valid(b1, b2):
+    def count(b):
+        occupied = 0
+        for i in range(3):
+            for j in range(3):
+                if b[i][j]:
+                    occupied += 1
+        return occupied
+    return count(b1) == count(b2)
 
 def initial_state():
     """
