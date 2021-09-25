@@ -116,5 +116,8 @@ async def run_fixedrace(request: Request):
 
 @app.post("/stock-hunter")
 async def run_stonks(request: Request):
+    from stockhunter import solve
     body = await request.body()
     body = json.loads(body)
+    res = await solve(body)
+    return res
