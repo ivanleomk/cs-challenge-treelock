@@ -39,9 +39,8 @@ def assign_grid_value(grid,target_point):
     return map
 
 def solve_instance(data):
-    entry_point = data["entryPoint"]['first'],data["entryPoint"]['second']
-    target_point = data["targetPoint"]['first'],data["targetPoint"]['second']
-
+    entry_point = int(data["entryPoint"]['first']), int(data["entryPoint"]['second'])
+    target_point = int(data["targetPoint"]['first']),int(data["targetPoint"]['second'])
     horizontalStepper = int(data['horizontalStepper'])
     verticalStepper = int(data['verticalStepper'])
     gridDepth = int(data['gridDepth'])
@@ -62,13 +61,13 @@ def solve_instance(data):
             # else risk is grid[x-1][y] * grid[x][y-1]
 
             if (x,y) == (0,0):
-                grid[x][y] =0 
+                grid[x][y] =0
             elif (x,y) == target_point:
                 grid[x][y] = 0
             elif y == 0:
                 grid[x][y] = x * horizontalStepper
             elif x== 0:
-                grid[x][y] = y*verticalStepper
+                grid[x][y] = y * verticalStepper
             else:
                 grid[x][y] = grid[x-1][y] * grid[x][y-1]
             grid[x][y] = ((grid[x][y]+gridDepth) % gridKey) % 3
