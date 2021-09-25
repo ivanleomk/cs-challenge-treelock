@@ -153,8 +153,8 @@ async def run_race(request: Request):
     print("\n\n", swimmers)
     res = filter(lambda x : x in swimmers, res)
     print(res)
-    print(",".join(res))
+    res =  ",".join(res)
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)[2:]}, merge=True)
-    return ",".join(res)
+    return res
