@@ -30,8 +30,8 @@ async def run_ttt(request: Request):
     body = await request.body()
     body = json.loads(body)
     battle_id = body["battleId"]
-    stream = requests.get("https://cis2021-arena.herokuapp.com/tic-tac-toe/start/" + battle_id, stream=True)
+    stream = requests.get("https://cis2021-arena.herokuapp.com/tic-tac-toe/start/" + battle_id, stream=True, headers={'Accept': 'text/event-stream'})
     client = sseclient.SSEClient(stream)
     for event in client.events():
-        print(event.data)
+        print(json.loads(event.data))
     print("########")
