@@ -131,13 +131,28 @@ async def run_race(request: Request):
 
     docs = races.stream()
 
-    key = str(datetime.datetime.now().hour)
+    key = str(datetime.datetime.utcnow().hour)
     results = None
     for doc in docs:
         if doc.id == key:
             results = doc.to_dict()
-    print(results)
+
+    res = {}
+    for placements in list(results.values()) + [body]:
+        try:
+            p = placements.decode('utf-8')
+        except:
+            p = placements
+        lp = p.split(",")
+        for swimmer in lp:
+            if swimmer in res:
+                res[swimmer] += 1
+            else:
+                res[swimmer] = 1
+    print(res)
+    res = list(sorted(res.keys(), key=lambda item: item[1], reverse=True))
+    print(res)
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)}, merge=True)
-    return body
+    return ",".join(res[:10])
