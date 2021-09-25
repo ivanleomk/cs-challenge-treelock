@@ -116,6 +116,7 @@ async def run_stonks(request: Request):
     from stockhunter import solve
     body = await request.body()
     body = json.loads(body)
+    return solve(body)
 
 
 cred = credentials.Certificate('firebase-key.json')
