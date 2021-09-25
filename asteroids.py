@@ -15,7 +15,7 @@ def generate_encoding(s):
 
 def get_mult(val):
     if val >= 10:
-        return val*2
+        return val * 2
     
     elif val >= 7:
         return val * 1.5
@@ -23,33 +23,38 @@ def get_mult(val):
     return val
 
 def expand_along_center(l,ind):
-    print("Looking at {}".format(l[ind]))
-    left,right = ind-1,ind+1
-    score = l[ind][0] * get_mult(l[ind][0])
+    acc = 0
+    acc += get_mult(l[ind][0])
+
+    left = ind - 1
+    right = ind + 1
+
     while left >= 0 and right < len(l):
-        print("----Left:{},right:{}".format(left,right))
         if l[left][1] != l[right][1]:
             break
-            
-        ttl_seg_len = l[left][0] + l[right][0]
-        ttl_seg_len *= get_mult(ttl_seg_len)
-        left-=1
-        right+=1
-    
-    return score
+
+        total = l[left][0] + l[right][0]
+        acc += get_mult(total)
+
+        left -= 1
+        right += 1
+
+    return acc
 
 def solve(asteroids):
-    print(asteroids)
     encoding = generate_encoding(asteroids)
-    print(encoding)
     max_score = 0
-    best_ind = -1
+    best_ind = 0
+    prev = 0
     for i in range(len(encoding)):
+        if i != 0:
+            prev += encoding[i - 1][0]
+
         new_score = expand_along_center(encoding,i)
-        print(i,new_score)
+        
         if  new_score > max_score:
             
-            best_ind = i
+            best_ind = prev + encoding[i][0] // 2
             max_score = new_score
     
     return best_ind,max_score
