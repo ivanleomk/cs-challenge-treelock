@@ -183,4 +183,4 @@ async def run_decoder(request: Request):
             "answer": acc
         }
     
-    return {"answer": json.loads(results["guess"])}
+    return results
