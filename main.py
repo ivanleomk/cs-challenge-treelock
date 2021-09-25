@@ -41,6 +41,17 @@ async def run_ttt(request: Request):
     client = sseclient.SSEClient(stream)
     for event in client.events():
         print(json.loads(event.data))
-        requests.post("https://cis2021-arena.herokuapp.com/tic-tac-toe/play/" +
+        requests.post("https://cis2021-arena.herokuapp.com/tic-tac-toe/start/" +
                       battle_id, json={"action": "(╯°□°)╯︵ ┻━┻"})
     print("########")
+
+
+
+
+
+
+@app.post("/stonks")
+async def run_stonks(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    print(body)
