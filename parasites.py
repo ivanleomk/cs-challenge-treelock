@@ -61,14 +61,10 @@ def solve_1_and_2_alt(data,interested):
   q = deque([[start_row,start_col,0]])
   time_taken = 0
   data[start_row][start_col]=1
-  visited = set()
-  first_infected = -1
 
   #Generate Tally
   tally = {}
   for i in interested:
-    x,y = i.split(",")
-    r,c = int(x),int(y)
     # Initially infected or healthy are set to -1 by default, else we make sure to set them to their values in the grid for tally
     tally[i] = -1
   
@@ -79,29 +75,22 @@ def solve_1_and_2_alt(data,interested):
       continue
 
     #Visited Cell
-    if (r,c) in visited:
+    if data[r][c] != 1:
       continue
-    
-    visited.add((r,c))
 
     #Only process healthy individuals that spawn more nodes to explore
-    if data[r][c] == 1:
-      if (r,c)!=(start_row,start_col) and first_infected == -1:
-        first_infected = curr_time
+    if (r,c)!=(start_row,start_col) and  "{},{}".format(r,c) in tally:
+      tally["{},{}".format(r,c)] = curr_time
 
-      if (r,c)!=(start_row,start_col) and  "{},{}".format(r,c) in tally and tally["{},{}".format(r,c)]==-1:
-        tally["{},{}".format(r,c)] = curr_time
-
-      time_taken = max(curr_time,time_taken)
-      data[r][c] == 3
-
-      q.append([r+1,c,curr_time+1])
-      q.append([r-1,c,curr_time+1])
-      q.append([r,c+1,curr_time+1])
-      q.append([r,c-1,curr_time+1])
+    time_taken = max(curr_time,time_taken)
+    q.append([r+1,c,curr_time+1])
+    q.append([r-1,c,curr_time+1])
+    q.append([r,c+1,curr_time+1])
+    q.append([r,c-1,curr_time+1])
+    data[r][c] = 3
   
   if allHealthyInfected(data):
-    return tally, first_infected
+    return tally, time_taken
   return tally, -1
 
 
