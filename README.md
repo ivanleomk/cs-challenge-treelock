@@ -10,11 +10,11 @@ Illustrates how to deploy a barebones FastAPI via Heroku.
 
 Then, run via uvicorn:
 
-    uvicorn slack:app --reload
+    uvicorn main:app --reload
 
 ## To deploy to heroku
 
-    heroku login  
+    heroku login
     heroku create
     git push heroku main
     heroku open
