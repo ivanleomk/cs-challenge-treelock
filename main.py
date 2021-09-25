@@ -183,4 +183,7 @@ async def run_decoder(request: Request):
             "answer": acc
         }
     
-    return results
+    answer = results['answer'].split(',')
+    return {
+        answer
+    }
