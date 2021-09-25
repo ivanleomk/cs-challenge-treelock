@@ -17,9 +17,10 @@ def read_root():
 
 @app.post("/asteroid")
 async def run_asteroid(request: Request):
-    from asteroids import calc_asteroids
+    from asteroids import solve
     body = await request.body()
-    return calc_asteroids(body)
+    print(body)
+    return solve(body["test_cases"])
 
 
 @app.post("/parasite")
