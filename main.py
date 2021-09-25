@@ -25,5 +25,6 @@ async def run_parasite(request: Request):
     from parasites import solve
     body = await request.body()
     body = json.loads(body)
+    print(body)
     return solve(body)
     

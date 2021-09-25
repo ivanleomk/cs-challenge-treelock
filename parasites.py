@@ -114,19 +114,31 @@ def solve(dataArr):
     res = []
     print(dataArr)
     for i in range(len(dataArr)):
+        
         data = dataArr[i]
-        x, y = locate_parasite(data["grid"])
-        # part 1 and 2
-        duration, tally = solve_1_and_2(deepcopy(data), x, y)
-        p3_time = solve_3(deepcopy(data["grid"]))
-        ans = {
-            "room": data["room"],
-            "p1": tally,
-            "p2": duration,
-            "p3": p3_time,
-            "p4": 0,
-        }
-        res.append(ans)
+        print(data)
+        if len(data["grid"][0] > 100) or len(data["grid"] > 100):
+            ans = {
+                "room": {},
+                "p1": 0,
+                "p2": 0,
+                "p3": 0,
+                "p4": 0,
+            }
+
+        else:
+            x, y = locate_parasite(data["grid"])
+            # part 1 and 2
+            duration, tally = solve_1_and_2(deepcopy(data), x, y)
+            p3_time = solve_3(deepcopy(data["grid"]))
+            ans = {
+                "room": data["room"],
+                "p1": tally,
+                "p2": duration,
+                "p3": p3_time,
+                "p4": 0,
+            }
+            res.append(ans)
 
     print(res)
     return res
