@@ -106,11 +106,9 @@ async def run_ttt(request: Request):
 
 @app.post("/fixedrace")
 async def run_fixedrace(request: Request):
-    body = await request.body()
-    body = json.loads(body)
+    print(request)
     # from fixedrace import solve
     # solve(body)
-    print(body)
 
     return "asd,ads,e3123,asd,axc,asd,231,sda,123,s"
 
