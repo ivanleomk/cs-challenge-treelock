@@ -151,7 +151,8 @@ async def run_race(request: Request):
             else:
                 res[swimmer] = 1
     res = list(sorted(res.keys(), key=lambda item: item[1], reverse=True))
+    print(res)
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)}, merge=True)
-    return body
+    return "Zada Zynda,Fabian Fogel,x,Judith Juntunen,x,Justin Jack,Jared Jinkins,Tracie Tembledor, Nelson Noss,Yuette Yurick"
