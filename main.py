@@ -44,6 +44,7 @@ async def run_ttt(request: Request):
     url = "https://cis2021-arena.herokuapp.com/tic-tac-toe/play/" + battle_id
     board = ttt.initial_state()
     me = None
+    curr = "O"
     for event in client.events():
         body = json.loads(event.data)
         print("RECEIVED", body)
@@ -56,16 +57,27 @@ async def run_ttt(request: Request):
             else:
                 me = "X"
             continue
-        # Other msgs from server
+        # Msgs from server
         if "position" in body and "player" in body:
+            # Check for correct player
+            if body["player"] == curr:
+                requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
+                return
+            curr = ttt.get_other(curr)
             # Execute the action received from the server
-            board = ttt.result(board, ttt.get_action(body["position"]))
+            b2 = ttt.result(board, ttt.get_action(body["position"]))
+            if not ttt.check_valid(board, b2):
+                requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
+                return
+            board = b2
             # Check if we need to send another action
             if body["player"] != me:
                 requests.post(
                     url, json={"action": "putSymbol", "position": ttt.get_dir(ttt.minimax(board))})
-        else:
-            requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
+        elif "action" in body and body["action"] == "(╯°□°)╯︵ ┻━┻":
+            return
+        elif "winner" in body:
+            return
     print("########\n\n")
 
 
