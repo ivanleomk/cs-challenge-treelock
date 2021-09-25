@@ -139,7 +139,7 @@ async def run_race(request: Request):
             results = doc.to_dict()
 
     res = {}
-    for placements in list(results.values()) + [body]:
+    for placements in (list(results.values()) if results else []) + [body]:
         try:
             p = placements.decode('utf-8')
         except:
@@ -150,9 +150,7 @@ async def run_race(request: Request):
                 res[swimmer] += 1
             else:
                 res[swimmer] = 1
-    print(res)
     res = list(sorted(res.keys(), key=lambda item: item[1], reverse=True))
-    print(res)
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)}, merge=True)
