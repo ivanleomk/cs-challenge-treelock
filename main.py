@@ -166,6 +166,7 @@ async def run_decoder(request: Request):
     body = json.loads(body)
     acc = []
     pol = body["possible_values"]
+    print(body)
     for _ in range(body["num_slots"]):
         acc.append(random.choice(pol))
     
