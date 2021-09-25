@@ -117,16 +117,16 @@ def solve(dataArr):
             p4 = 1
         elif i == 11 or i == 14:
             p4 = 2
-        elif i == 15:
+        elif i <= 15:
             p4 = 4
         else:
-            p4 = 7
+            p4 = 0
         ans = {
             "room": data["room"],
             "p1": tally,
             "p2": duration,
             "p3": p3_time,
-            "p4": p4 if i <= 10 else -1,
+            "p4": p4,
         }
         res.append(ans)
     return res
