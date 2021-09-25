@@ -1,5 +1,8 @@
 # A Bare Bones Slack API
 # Illustrates basic usage of FastAPI
+from firebase_admin import firestore
+from firebase_admin import credentials
+import firebase_admin
 from fastapi import FastAPI, Request
 import json
 import requests
@@ -32,11 +35,13 @@ async def run_parasite(request: Request):
     body = json.loads(body)
     return solve(body)
 
+
 @app.post("/optopt")
 async def run_optopt(request: Request):
     body = await request.body()
     body = json.loads(body)
     print(body)
+
 
 @app.post("/tic-tac-toe")
 async def run_ttt(request: Request):
@@ -106,20 +111,17 @@ async def run_ttt(request: Request):
     print("########\n\n")
 
 
-@app.post("/stonks")
+@app.post("/stock-hunter")
 async def run_stonks(request: Request):
+    from stockhunter import solve
     body = await request.body()
     body = json.loads(body)
 
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
 
-# Use the application default credentials
 cred = credentials.Certificate('firebase-key.json')
 firebase_admin.initialize_app(cred)
-
 db = firestore.client()
+
 
 @app.post("/fixedrace")
 async def run_race(request: Request):
@@ -134,5 +136,6 @@ async def run_race(request: Request):
         if doc.id == key:
             results = doc.to_dict()
 
-    races.document(key).set({str(datetime.datetime.now()): str(body)}, merge=True)
+    races.document(key).set(
+        {str(datetime.datetime.now()): str(body)}, merge=True)
     return results
