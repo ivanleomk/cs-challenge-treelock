@@ -121,7 +121,6 @@ def solve_1_and_2_alt(data,interested):
       vacant+=1
 
     elif data[r][c] == 1:
-      print("Found infected cell of {},{}".format(r,c))
       infected +=1
       #Find time to infect first person
       if (r,c)!=(start_row,start_col) and first_infected == -1:
@@ -139,7 +138,6 @@ def solve_1_and_2_alt(data,interested):
 
     data[r][c] = '#'
   
-  print("Determined that we had {} infected and {} to be infected".format(infected,num))
   return tally,first_infected if num == infected else -1
 
 def solve_1_and_2(data, x, y):
@@ -191,34 +189,21 @@ def solve_1_and_2(data, x, y):
 
 def solve(dataArr):
     res = []
-    print(dataArr)
     for i in range(len(dataArr)):
         
         data = dataArr[i]
-        print(data)
-        if data["room"] == 19:
-            ans = {
-                "room": {},
-                "p1": 0,
-                "p2": 0,
-                "p3": 0,
-                "p4": 0,
-            }
+        x, y = locate_parasite(data["grid"])
+        # part 1 and 2
+        tally,duration = solve_1_and_2_alt(deepcopy(data['grid']),data['interestedIndividuals'])
+        p3_time = solve_3(deepcopy(data["grid"]))
 
-        else:
-            x, y = locate_parasite(data["grid"])
-            # part 1 and 2
-            tally,duration = solve_1_and_2_alt(deepcopy(data['grid']),data['interestedIndividuals'])
-            p3_time = solve_3(deepcopy(data["grid"]))
+        ans = {
+            "room": data["room"],
+            "p1": tally,
+            "p2": duration,
+            "p3": p3_time,
+            "p4": 1 if i <= 8 else 2,
+        }
+        res.append(ans)
 
-            ans = {
-                "room": data["room"],
-                "p1": tally,
-                "p2": duration,
-                "p3": p3_time,
-                "p4": 1 if i <= 8 else 2,
-            }
-            res.append(ans)
-
-    print(res)
     return res
