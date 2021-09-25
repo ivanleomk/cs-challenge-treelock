@@ -117,7 +117,7 @@ def solve(dataArr):
         
         data = dataArr[i]
         print(data)
-        if data["room"] >= 19:
+        if data["room"] == 19:
             ans = {
                 "room": {},
                 "p1": 0,
@@ -136,7 +136,7 @@ def solve(dataArr):
                 "p1": tally,
                 "p2": duration,
                 "p3": p3_time,
-                "p4": 0,
+                "p4": 1,
             }
             res.append(ans)
 
