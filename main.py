@@ -155,4 +155,4 @@ async def run_race(request: Request):
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)}, merge=True)
-    return "Zada Zynda,Fabian Fogel,x,Judith Juntunen,x,Justin Jack,Jared Jinkins,Tracie Tembledor, Nelson Noss,Yuette Yurick"
+    return "Zada Zynda,Fabian Fogel,x,Judith Juntunen,x,Justin Jack,Jared Jinkins,Tracie Tembledor,Nelson Noss,Fabian Fogel"
