@@ -126,6 +126,15 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 
+@app.post("/stonks")
+async def execute(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    arr = []
+    for _ in body:
+        arr.append([])
+    return arr
+
 @app.post("/fixedrace")
 async def run_race(request: Request):
     body = await request.body()
