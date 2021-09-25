@@ -63,7 +63,11 @@ async def run_ttt(request: Request):
                 return
             nxt = ttt.get_other(nxt)
             # Execute the action received from the server
-            b2 = ttt.result(board, ttt.get_action(body["position"]))
+            try:
+                b2 = ttt.result(board, ttt.get_action(body["position"]))
+            except:
+                requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
+                return
             # if not ttt.check_valid(board, b2):
             #     requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
             #     return
