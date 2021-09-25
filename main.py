@@ -154,4 +154,4 @@ async def run_race(request: Request):
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)}, merge=True)
-    return ",".join(res[:10])
+    return body
