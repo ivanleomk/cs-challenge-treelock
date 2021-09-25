@@ -2,8 +2,7 @@
 def find_overlap(interval_1, interval_2):
     start_1, end_1 = interval_1
     start_2, end_2 = interval_2
-
-    return max(start_1, start_2), min(end_1, end_2)
+    return min(start_1, start_2), max(end_1, end_2)
 
 
 def generate_intervals(raw_data):
