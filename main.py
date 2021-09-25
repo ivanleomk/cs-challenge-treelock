@@ -28,9 +28,11 @@ async def run_parasite(request: Request):
 @app.post("/tic-tac-toe")
 async def run_ttt(request: Request):
     body = await request.body()
-    battle_id = body["battleId"]
-    stream = requests.get(os.path.join("https://cis2021-arena.herokuapp.com/tic-tac-toe/start", battle_id), stream=True)
-    client = sseclient.SSEClient(stream)
-    for event in client.events():
-        print(event.data)
+    print("\n#######")
+    print(body)
+    # battle_id = body["battleId"]
+    # stream = requests.get(os.path.join("https://cis2021-arena.herokuapp.com/tic-tac-toe/start", battle_id), stream=True)
+    # client = sseclient.SSEClient(stream)
+    # for event in client.events():
+    #     print(event.data)
     print("########")
