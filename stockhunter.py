@@ -60,7 +60,7 @@ def solve_instance(data):
             # assign_value(grid,x,y)
             # print(grid[x][y])
     
-    map = assign_grid_value(grid)
+    map = assign_grid_value(grid,target_point)
     return {
         'gridMap':map,
         'minimumCost':9
