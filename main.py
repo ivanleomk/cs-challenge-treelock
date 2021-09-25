@@ -135,7 +135,8 @@ async def run_race(request: Request):
     for doc in docs:
         if doc.id == key:
             results = doc.to_dict()
+    print(results)
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)}, merge=True)
-    return results
+    return body
