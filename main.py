@@ -5,6 +5,7 @@ import json
 import requests
 import sseclient
 import tictactoe as ttt
+import datetime
 
 # Instantiate the FastAPI
 app = FastAPI()
@@ -109,3 +110,29 @@ async def run_ttt(request: Request):
 async def run_stonks(request: Request):
     body = await request.body()
     body = json.loads(body)
+
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Use the application default credentials
+cred = credentials.Certificate('firebase-key.json')
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
+@app.post("/fixedrace")
+async def run_race(request: Request):
+    body = await request.body()
+    races = db.collection("race_strs")
+
+    docs = races.stream()
+
+    key = str(datetime.datetime.now().hour)
+    results = None
+    for doc in docs:
+        if doc.id == key:
+            results = doc.to_dict()
+
+    races.document(key).set({str(datetime.datetime.now()): str(body)}, merge=True)
+    return results
