@@ -104,8 +104,20 @@ async def run_ttt(request: Request):
         requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
     print("########\n\n")
 
+@app.post('/stock-hunter')
+async def run_stock_hunter(request: Request):
+    from stockhunter import solve
+    body = await request.body()
+    body = json.loads(body)
+    print(body)
+    return solve(body)
+    
+
 
 @app.post("/stonks")
 async def run_stonks(request: Request):
+    from stockhunter import solve
     body = await request.body()
     body = json.loads(body)
+    res = await solve(body)
+    return res
