@@ -101,52 +101,6 @@ def solve_1_and_2_alt(data, interested):
     return tally, -1
 
 
-def solve_1_and_2(data, interested):
-    x, y = locate_parasite(data)
-    grid = data
-    q = deque()
-    visited = set()
-    tally = {}
-    for i in interested:
-        tally[i] = -1
-
-    def check_and_append(r, c):
-        if (r, c) in visited:
-            return
-        if r >= len(grid) or r < 0:
-            return
-        if c >= len(grid[0]) or c < 0:
-            return
-        if grid[r][c] == 1:
-            q.append((r, c))
-
-    q.append((x, y))
-    t = -1
-    while q:
-        width = len(q)
-        t += 1
-        for _ in range(width):
-            a, b = q.popleft()
-            check_and_append(a, b - 1)
-            check_and_append(a, b + 1)
-            check_and_append(a + 1, b)
-            check_and_append(a - 1, b)
-            str_coord = "{},{}".format(a, b)
-            if t != 0 and str_coord in tally:
-                tally[str_coord] = t
-            grid[a][b] = 3
-            visited.add((a, b))
-
-    duration = t
-    for i in grid:
-        for j in i:
-            if j == 1:
-                duration = -1
-                break
-
-    return tally, duration
-
-
 def solve(dataArr):
     res = []
     for i in range(len(dataArr)):
@@ -172,7 +126,7 @@ def solve(dataArr):
             "p1": tally,
             "p2": duration,
             "p3": p3_time,
-            "p4": -1,
+            "p4": p4 if i <= 10 else -1,
         }
         res.append(ans)
     return res
