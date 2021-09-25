@@ -10,52 +10,37 @@ def locate_parasite(grid):
             if grid[i][j] == 3:
                 return i, j
 
-def det_people(grid):
-  ppl = 0
+def allHealthyInfected(grid):
   for i in range(len(grid)):
-        # traverse columns
-        for j in range(len(grid[0])):
-            if grid[i][j] == 1:
-                ppl+=1
-  
-  return ppl+1
+    for j in range(len(grid[0])):
+      if grid[i][j] == 1:
+        return False
+  return True
 
 
 def solve_3(data):
-  start_row,start_col = 0,0
-  for i in range(len(data)):
-    for j in range(len(data[i])):
-      if data[i][j] == 3:
-        start_row = i
-        start_col = j
-        break
-  
+  start_row,start_col = locate_parasite(data)
   q = deque([[start_row,start_col,0]])
-
-  vacant = 0
-  infected = 0
-  vaccinated = 0
   time_taken = 0
   data[start_row][start_col]=1
+  visited = set()
   
   while q:
     r,c,curr_time = q.popleft()
     
-
     if r < 0 or r >= len(data) or c < 0 or c >= len(data[0]):
       continue
 
     #Visited Cell
-    if data[r][c] == '#':
+    if (r,c) in visited:
       continue
+    
+    visited.add((r,c))
 
-    #Else update vacant and vaccinated count
-    if data[r][c] == 0:
-      vacant+=1
-
-    elif data[r][c] == 1:
-      infected +=1
+    #Only process healthy individuals that spawn more nodes to explore
+    if data[r][c] == 1:
       time_taken = max(curr_time,time_taken)
+      data[r][c] == 3
 
       q.append([r+1,c,curr_time+1])
       q.append([r-1,c,curr_time+1])
@@ -66,63 +51,40 @@ def solve_3(data):
       q.append([r-1,c+1,curr_time+1])
       q.append([r+1,c+1,curr_time+1])
       q.append([r+1,c-1,curr_time+1])
-
-    elif data[r][c] == 2:
-      vaccinated+=1
-
-    data[r][c] = '#'
   
-  return time_taken if len(data)*len(data[0]) - (vacant + vaccinated) ==  infected else -1
+  if allHealthyInfected(data):
+    return time_taken
+  return -1
 
-
-
-
-
-def solve_1_and_2_alt(data,interested):
-  start_row,start_col = 0,0
-  for i in range(len(data)):
-    for j in range(len(data[i])):
-      if data[i][j] == 3:
-        start_row = i
-        start_col = j
-        break
-  
+def solve_1_and_2_alt(data):
+  start_row,start_col = locate_parasite(data)
   q = deque([[start_row,start_col,0]])
-  num = det_people(data)
-
-  vacant = 0
-  infected = 0
-  vaccinated = 0
   time_taken = 0
   data[start_row][start_col]=1
-  first_infected = -1
+  visited = set()
 
-  #Return -1 if person remains healthy or if the person is infected to begin with.
+  #Generate Tally
   tally = {}
   for i in interested:
     x,y = i.split(",")
     r,c = int(x),int(y)
     # Initially infected or healthy are set to -1 by default, else we make sure to set them to their values in the grid for tally
     tally[i] = -1
-    
+  
   while q:
     r,c,curr_time = q.popleft()
     
-
     if r < 0 or r >= len(data) or c < 0 or c >= len(data[0]):
       continue
 
     #Visited Cell
-    if data[r][c] == '#':
+    if (r,c) in visited:
       continue
+    
+    visited.add((r,c))
 
-    #Else update vacant and vaccinated count
-    if data[r][c] == 0:
-      vacant+=1
-
-    elif data[r][c] == 1:
-      infected +=1
-      #Find time to infect first person
+    #Only process healthy individuals that spawn more nodes to explore
+    if data[r][c] == 1:
       if (r,c)!=(start_row,start_col) and first_infected == -1:
         first_infected = curr_time
 
@@ -130,15 +92,80 @@ def solve_1_and_2_alt(data,interested):
         tally["{},{}".format(r,c)] = curr_time
 
       time_taken = max(curr_time,time_taken)
+      data[r][c] == 3
 
       q.append([r+1,c,curr_time+1])
       q.append([r-1,c,curr_time+1])
       q.append([r,c+1,curr_time+1])
       q.append([r,c-1,curr_time+1])
-
-    data[r][c] = '#'
   
-  return tally,first_infected if num == infected else -1
+  if allHealthyInfected(data):
+    return tally, first_infected
+  return tally, -1
+
+
+
+# def solve_1_and_2_alt(data,interested):
+#   start_row,start_col = 0,0
+#   for i in range(len(data)):
+#     for j in range(len(data[i])):
+#       if data[i][j] == 3:
+#         start_row = i
+#         start_col = j
+#         break
+  
+#   q = deque([[start_row,start_col,0]])
+#   num = det_people(data)
+
+#   vacant = 0
+#   infected = 0
+#   vaccinated = 0
+#   time_taken = 0
+#   data[start_row][start_col]=1
+#   first_infected = -1
+
+#   #Return -1 if person remains healthy or if the person is infected to begin with.
+#   tally = {}
+#   for i in interested:
+#     x,y = i.split(",")
+#     r,c = int(x),int(y)
+#     # Initially infected or healthy are set to -1 by default, else we make sure to set them to their values in the grid for tally
+#     tally[i] = -1
+    
+#   while q:
+#     r,c,curr_time = q.popleft()
+    
+
+#     if r < 0 or r >= len(data) or c < 0 or c >= len(data[0]):
+#       continue
+
+#     #Visited Cell
+#     if data[r][c] == '#':
+#       continue
+
+#     #Else update vacant and vaccinated count
+#     if data[r][c] == 0:
+#       vacant+=1
+
+#     elif data[r][c] == 1:
+#       infected +=1
+#       #Find time to infect first person
+#       if (r,c)!=(start_row,start_col) and first_infected == -1:
+#         first_infected = curr_time
+
+#       if (r,c)!=(start_row,start_col) and  "{},{}".format(r,c) in tally and tally["{},{}".format(r,c)]==-1:
+#         tally["{},{}".format(r,c)] = curr_time
+
+#       time_taken = max(curr_time,time_taken)
+
+#       q.append([r+1,c,curr_time+1])
+#       q.append([r-1,c,curr_time+1])
+#       q.append([r,c+1,curr_time+1])
+#       q.append([r,c-1,curr_time+1])
+
+#     data[r][c] = '#'
+  
+#   return tally,first_infected if num == infected else -1
 
 def solve_1_and_2(data, x, y):
     grid = data["grid"]
@@ -192,18 +219,21 @@ def solve(dataArr):
     for i in range(len(dataArr)):
         
         data = dataArr[i]
-        x, y = locate_parasite(data["grid"])
-        # part 1 and 2
-        tally,duration = solve_1_and_2_alt(deepcopy(data['grid']),data['interestedIndividuals'])
-        p3_time = solve_3(deepcopy(data["grid"]))
 
-        ans = {
-            "room": data["room"],
-            "p1": tally,
-            "p2": duration,
-            "p3": p3_time,
-            "p4": 1 if i <= 8 else 2,
-        }
-        res.append(ans)
+
+        else:
+            x, y = locate_parasite(data["grid"])
+            # part 1 and 2
+            tally,duration = solve_1_and_2_alt(deepcopy(data['grid']),data['interestedIndividuals'])
+            p3_time = solve_3(deepcopy(data["grid"]))
+
+            ans = {
+                "room": data["room"],
+                "p1": tally,
+                "p2": duration,
+                "p3": p3_time,
+                "p4": 1 if i <= 8 else 2,
+            }
+            res.append(ans)
 
     return res
