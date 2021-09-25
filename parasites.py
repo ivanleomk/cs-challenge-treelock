@@ -172,7 +172,7 @@ def solve(dataArr):
             "p1": tally,
             "p2": duration,
             "p3": p3_time,
-            "p4": p4,
+            "p4": -1,
         }
         res.append(ans)
     return res
