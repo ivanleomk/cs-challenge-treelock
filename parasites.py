@@ -15,10 +15,10 @@ def det_people(grid):
   for i in range(len(grid)):
         # traverse columns
         for j in range(len(grid[0])):
-            if grid[i][j] != 0:
+            if grid[i][j] == 1:
                 ppl+=1
   
-  return ppl
+  return ppl+1
 
 
 def solve_3(data):
@@ -140,7 +140,7 @@ def solve_1_and_2_alt(data,interested):
     data[r][c] = '#'
   
   print("Determined that we had {} infected and {} to be infected".format(infected,num))
-  return tally,first_infected if num== infected else -1
+  return tally,first_infected if num == infected else -1
 
 def solve_1_and_2(data, x, y):
     grid = data["grid"]
