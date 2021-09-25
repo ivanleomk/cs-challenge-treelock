@@ -108,7 +108,7 @@ async def run_ttt(request: Request):
 async def run_fixedrace(request: Request):
     print(request.__dict__)
     print(dir(request))
-    print(request.values)
+    print(request.values())
     # from fixedrace import solve
     # solve(body)
 
