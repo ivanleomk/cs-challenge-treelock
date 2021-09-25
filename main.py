@@ -149,9 +149,10 @@ async def run_race(request: Request):
             else:
                 res[swimmer] = 1
     res = list(sorted(res.keys(), key=lambda item: item[1], reverse=True))
-
+    swimmers = body[2:].split(",")
+    res = filter(lambda x : x in swimmers, res)
     print(res)
 
     races.document(key).set(
         {str(datetime.datetime.now()): str(body[2:])}, merge=True)
-    return ",".join(random.shuffle(body[2:].split(",")))
+    return ",".join(res)
