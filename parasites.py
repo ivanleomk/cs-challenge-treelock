@@ -62,6 +62,7 @@ def solve_1_and_2_alt(data,interested):
   time_taken = 0
   data[start_row][start_col]=1
   visited = set()
+  first_infected = -1
 
   #Generate Tally
   tally = {}
