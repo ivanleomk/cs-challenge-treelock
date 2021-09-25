@@ -1,11 +1,8 @@
 # A Bare Bones Slack API
 # Illustrates basic usage of FastAPI
-from fastapi import FastAPI, Request
-from pydantic import BaseModel
-from typing import List
+from fastapi import FastAPI, requests
 import json
 import requests
-import os
 import sseclient
 import tictactoe as ttt
 
@@ -78,6 +75,22 @@ async def run_ttt(request: Request):
             return
         elif "winner" in body:
             return
+    print("########\n\n")
+
+
+@app.post("/quoridor")
+async def run_ttt(request: Request):
+    body = await request.body()
+    body = json.loads(body)
+    battle_id = body["battleId"]
+    stream = requests.get(
+        "https://cis2021-arena.herokuapp.com/quoridor/start/" + battle_id, stream=True)
+    client = sseclient.SSEClient(stream)
+    url = "https://cis2021-arena.herokuapp.com/quoridor/play/" + battle_id
+    for event in client.events():
+        body = json.loads(event.data)
+        print("RECEIVED", body)
+        requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
     print("########\n\n")
 
 
