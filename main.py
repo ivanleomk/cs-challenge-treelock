@@ -106,9 +106,8 @@ async def run_ttt(request: Request):
 
 @app.post("/fixedrace")
 async def run_fixedrace(request: Request):
-    print(request.__dict__)
-    print(dir(request))
     print(request.values())
+    print(request.body())
     # from fixedrace import solve
     # solve(body)
 
