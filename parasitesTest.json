@@ -1,0 +1,23 @@
+[
+    {
+      "room": 1,
+      "grid": [
+        [0, 3],
+        [0, 1]
+      ],
+      "interestedIndividuals": [
+        "0,0"
+      ]
+    },
+    {
+      "room": 2,
+      "grid": [
+        [0, 3, 2],
+        [0, 1, 1],
+        [1, 0, 0]
+      ],
+      "interestedIndividuals": [
+        "0,2", "2,0", "1,2"
+      ]
+    }
+  ]
