@@ -7,6 +7,7 @@ import json
 import requests
 import os
 import sseclient
+import tictactoe as ttt
 
 # Instantiate the FastAPI
 app = FastAPI()
@@ -37,10 +38,30 @@ async def run_ttt(request: Request):
     body = await request.body()
     body = json.loads(body)
     battle_id = body["battleId"]
-    stream = requests.get("https://cis2021-arena.herokuapp.com/tic-tac-toe/start/" + battle_id, stream=True, headers={'Accept': 'text/event-stream'})
+    stream = requests.get(
+        "https://cis2021-arena.herokuapp.com/tic-tac-toe/start/" + battle_id, stream=True)
     client = sseclient.SSEClient(stream)
+    url = "https://cis2021-arena.herokuapp.com/tic-tac-toe/play/" + battle_id
+    board = ttt.initial_state()
     for event in client.events():
-        print(json.loads(event.data))
-        requests.post("https://cis2021-arena.herokuapp.com/tic-tac-toe/play/" +
-                      battle_id, json={"action": "(╯°□°)╯︵ ┻━┻"})
+        body = json.loads(event.data)
+        print(body)
+        # First initiation
+        if "youAre" in body:
+            if body["youAre"] == "O":
+                action = ttt.minimax(board)
+                board = ttt.result(board, action)
+                requests.post(
+                    url, json={"action": "putSymbol", "position": ttt.get_dir(action)})
+            continue
+        # Other msgs from server
+        # Execute the server's action
+        action = ttt.get_action(body["position"])
+        board = ttt.result(board, action)
+        # Execute and send back our own action
+        action = ttt.minimax(board)
+        board = ttt.result(board, action)
+        requests.post(
+            url, json={"action": "putSymbol", "position": ttt.get_dir(action)})
+    requests.post(url, json={"action": "(╯°□°)╯︵ ┻━┻"})
     print("########")
