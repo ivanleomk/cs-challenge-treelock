@@ -9,6 +9,7 @@ import requests
 import sseclient
 import tictactoe as ttt
 import datetime
+import random
 
 # Instantiate the FastAPI
 app = FastAPI()
@@ -140,10 +141,7 @@ async def run_race(request: Request):
 
     res = {}
     for placements in (list(results.values()) if results else []) + [body]:
-        try:
-            p = placements.decode('utf-8')
-        except:
-            p = placements
+        p = str(placements)
         lp = p.split(",")
         for swimmer in lp:
             if swimmer in res:
@@ -151,8 +149,9 @@ async def run_race(request: Request):
             else:
                 res[swimmer] = 1
     res = list(sorted(res.keys(), key=lambda item: item[1], reverse=True))
+
     print(res)
 
     races.document(key).set(
-        {str(datetime.datetime.now()): str(body)}, merge=True)
-    return "Zada Zynda,Fabian Fogel,x,Judith Juntunen,x,Justin Jack,Jared Jinkins,Tracie Tembledor,Nelson Noss,Fabian Fogel"
+        {str(datetime.datetime.now()): str(body[2:])}, merge=True)
+    return ",".join(random.shuffle(body[2:].split(",")))
