@@ -199,10 +199,25 @@ async def run_decoder(request: Request):
 async def run_perry(request: Request):
     body = await request.body()
     body = json.loads(body)
-    print(body)
+    from intervals import find_overlapping_interval
+    import math
     acc = []
-    for qn in body:
-        acc.append({"p": 43977, "q": 250000000})
+    for data in body:
+        processed = find_overlapping_interval(body["question"])
+        max_idx = 0
+        curr_max = 0
+        for i in range(len(processed)):
+            curr_amt = processed[i][0]
+            if curr_amt > curr_max:
+                curr_max = curr_amt
+                max_idx = i
+        pos = processed[max_idx][1][1] - processed[max_idx][1][0] + 1
+        total = data["maxRating"]
+        hcf = math.gcd(total, pos)
+        acc.append({
+            "p": pos // hcf,
+            "q": total // hcf
+        })
     return acc
 
 @app.post("/cipher-cracking")
