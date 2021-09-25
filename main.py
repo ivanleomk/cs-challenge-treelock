@@ -158,3 +158,13 @@ async def run_race(request: Request):
     races.document(key).set(
         {str(datetime.datetime.now()): str(body)[2:len(str(body))-1]}, merge=True)
     return res
+
+
+@app.post("/decoder")
+async def run_decoder(request: Request):
+    body = await request.body()
+    print(body)
+
+    return {
+        "answer": ["a", "b", "c", "d"]
+    }
